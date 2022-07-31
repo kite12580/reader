@@ -27,6 +27,8 @@ RUN \
 
 # 时区
 ENV TZ=Asia/Shanghai
+ARG MONGO SECUREKEY
+ENV READER_APP_CACHECHAPTERCONTENT=true READER_APP_SECURE=true SPRING_PROFILES_ACTIVE=prod READER_APP_MONGOURI=$MONGO READER_APP_SECUREKEY=$SECUREKEY
 
 #RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 #  && echo Asia/Shanghai > /etc/timdezone \
