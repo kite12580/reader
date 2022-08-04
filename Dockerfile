@@ -44,7 +44,8 @@ ENV READER_APP_CACHECHAPTERCONTENT=true READER_APP_SECURE=true SPRING_PROFILES_A
 #  && dpkg-reconfigure -f noninteractive tzdata
 
 EXPOSE 8080
-ENTRYPOINT ["/sbin/tini", "--"]
+# ENTRYPOINT ["/sbin/tini", "--"]  # amazoncorretto:8u332-alpine3.14-jre
+ENTRYPOINT ["/usr/bin/tini", "--"]  # open-8u332-b09-jre
 # COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
 CMD ["java", "-jar", "/app/bin/reader.jar" ]
