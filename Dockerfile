@@ -14,16 +14,25 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM amazoncorretto:8u332-alpine3.14-jre
+# FROM amazoncorretto:8u332-alpine3.14-jre
+# # Install base packages
+# RUN \
+#     # apk update; \
+#     # apk upgrade; \
+#     # Add CA certs tini tzdata
+#     apk add --no-cache ca-certificates tini tzdata; \
+#     update-ca-certificates; \
+#     # Clean APK cache
+#     rm -rf /var/cache/apk/*;
+
+FROM ibm-semeru-runtimes:open-8u332-b09-jre
 # Install base packages
 RUN \
-    # apk update; \
-    # apk upgrade; \
-    # Add CA certs tini tzdata
-    apk add --no-cache ca-certificates tini tzdata; \
+    apt-get update; \
+    apt-get install -y ca-certificates tini tzdata; \
     update-ca-certificates; \
-    # Clean APK cache
-    rm -rf /var/cache/apk/*;
+    # Clean apt cache
+    rm -rf /var/lib/apt/lists/*
 
 # 时区
 ENV TZ=Asia/Shanghai
