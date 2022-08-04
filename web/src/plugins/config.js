@@ -30,7 +30,7 @@ const defaultDayConfig = {
   contentColor: "#fff",
   popupColor: "#ede7da",
   themeType: "day",
-  readMethod: "上下滑动",
+  readMethod: "左右滑动",
   clickMethod: "自动",
   animateMSTime: 300, // 翻页动画时长
   readWidth: 800,
@@ -55,7 +55,7 @@ const defaultNightConfig = {
   contentColor: "#171717",
   popupColor: "#121212",
   themeType: "night",
-  readMethod: "上下滑动",
+  readMethod: "左右滑动",
   clickMethod: "自动",
   animateMSTime: 300, // 翻页动画时长
   readWidth: 800,
