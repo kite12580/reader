@@ -14,38 +14,37 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-# FROM amazoncorretto:8u332-alpine3.14-jre
-# # Install base packages
-# RUN \
-#     # apk update; \
-#     # apk upgrade; \
-#     # Add CA certs tini tzdata
-#     apk add --no-cache ca-certificates tini tzdata; \
-#     update-ca-certificates; \
-#     # Clean APK cache
-#     rm -rf /var/cache/apk/*;
-
-FROM ibm-semeru-runtimes:open-8u332-b09-jre
+FROM amazoncorretto:8u332-alpine3.14-jre
 # Install base packages
 RUN \
-    apt-get update; \
-    apt-get install -y ca-certificates tini tzdata; \
+    # apk update; \
+    # apk upgrade; \
+    # Add CA certs tini tzdata
+    apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
-    # Clean apt cache
-    rm -rf /var/lib/apt/lists/*
+    # Clean APK cache
+    rm -rf /var/cache/apk/*;
+
+# FROM ibm-semeru-runtimes:open-8u332-b09-jre
+# # Install base packages
+# RUN \
+#     apt-get update; \
+#     apt-get install -y ca-certificates tini tzdata; \
+#     update-ca-certificates; \
+#     # Clean apt cache
+#     rm -rf /var/lib/apt/lists/*
 
 # 时区
-ENV TZ=Asia/Shanghai
 ARG MONGO SECUREKEY
-ENV READER_APP_CACHECHAPTERCONTENT=true READER_APP_SECURE=true SPRING_PROFILES_ACTIVE=prod READER_APP_MONGOURI=$MONGO READER_APP_SECUREKEY=$SECUREKEY
+ENV TZ=Asia/Shanghai READER_APP_CACHECHAPTERCONTENT=true READER_APP_SECURE=true SPRING_PROFILES_ACTIVE=prod READER_APP_MONGOURI=$MONGO READER_APP_SECUREKEY=$SECUREKEY
 
 #RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 #  && echo Asia/Shanghai > /etc/timdezone \
 #  && dpkg-reconfigure -f noninteractive tzdata
 
 EXPOSE 8080
-# ENTRYPOINT ["/sbin/tini", "--"]  # amazoncorretto:8u332-alpine3.14-jre
-ENTRYPOINT ["/usr/bin/tini", "--"]  # open-8u332-b09-jre
+ENTRYPOINT ["/sbin/tini", "--"]
+# ENTRYPOINT ["/usr/bin/tini", "--"]  # open-8u332-b09-jre
 # COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
 CMD ["java", "-jar", "/app/bin/reader.jar" ]
